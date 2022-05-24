@@ -1,12 +1,105 @@
-﻿<Window x:Class="HeadhunterGetterClient.MainWindow"
+﻿<Window x:Name="window" x:Class="HeadhunterGetterClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HeadhunterGetterClient"
+        xmlns:vm="clr-namespace:HeadhunterGetterClient.ViewModels"
         mc:Ignorable="d"
-        Title="Сбор данных" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="нюхач данных" Height="450" Width="{Binding FullWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <TabControl>
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Text="Сбор данных"/>
+            </TabItem.Header>
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Right" Width="100">
+                    <TextBlock Text="Вакансия" Margin="5,2.5"/>
+                    <TextBox Margin="5,2.5" Text="{Binding VacancyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Зарплата" Margin="5,2.5"/>
+                    <TextBox Margin="5,2.5" Text="{Binding Salary, Mode=TwoWay, StringFormat=\{0:C\}, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Content="Искать" Margin="5,2.5" Command="{Binding GetCommand}"/>
+                    <TextBlock Text="Найдено" Margin="5,2.5"/>
+                    <TextBlock Text="{Binding VacanciesFound}" Margin="5,2.5"/>
+                </StackPanel>
+                <TextBlock Text="{Binding OutPut, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+            </DockPanel>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock Text="Клиент"/>
+            </TabItem.Header>
+            <TabControl>
+                <TabItem IsSelected="{Binding isVacansies}">
+                    <TabItem.Header>
+                        <TextBlock Text="Вакансии"/>
+                    </TabItem.Header>
+                    <DockPanel x:Name="dockPanel" LastChildFill="True">
+                        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Right" Height="20" Width="50" Content="Загрузить" Command="{Binding LoadCommand}"/>
+                        <ListBox ItemsSource="{Binding Vacancies}" HorizontalAlignment="Center">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel MinWidth="400">
+                                        <TextBlock Text="{Binding Name}" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding PublishedDate, StringFormat=\{0:g\}}" DockPanel.Dock="Bottom" HorizontalAlignment="Right"/>
+                                            <Label HorizontalAlignment="Stretch" MinWidth="100"/>
+                                            <Button Content="Просмотр" DockPanel.Dock="Bottom" CommandParameter="{Binding Id}" HorizontalAlignment="Left" Margin="5" Command="{Binding DataContext.WatchCommand, ElementName=window}" />
+                                            <Button Content="Удалить" DockPanel.Dock="Bottom" CommandParameter="{Binding Id}" HorizontalAlignment="Left" Margin="5" Command="{Binding DataContext.DeleteCommand, ElementName=window}"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding  Description}" HorizontalAlignment="Center"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </TabItem>
+                <TabItem IsSelected="{Binding isVacansy}">
+                    <TabItem.Header>
+                        <TextBlock Text="Вакансия"/>
+                    </TabItem.Header>
+                    <DockPanel LastChildFill="True">
+                        <TextBox DockPanel.Dock="Top" HorizontalAlignment="Center" Text="{Binding  ChoosenVacancy.Name}"/>
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="UPDATE" Command="{Binding PutCommand}"/>
+                            <Button Content="POST" Command="{Binding PostCommand}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                            <TextBox Text="{Binding ChoosenVacancy.Area.Name}"/>
+                            <TextBox Text="{Binding ChoosenVacancy.Experience.Name}"/>
+                            <TextBox Text="{Binding ChoosenVacancy.Published_at}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" DockPanel.Dock="Left" MinWidth="100">
+                            <TextBox Text="{Binding ChoosenVacancy.Salary.From}"/>
+                            <TextBox Text="{Binding ChoosenVacancy.Salary.To}"/>
+                            <TextBox Text="{Binding ChoosenVacancy.Salary.Currency}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" DockPanel.Dock="Right" MinWidth="100">
+                            <ListBox MinHeight="20" ItemsSource="{Binding ChoosenVacancy.Key_skills}" SelectedItem="{Binding SelectedSkill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox MinHeight="20" Text="{Binding ToAddSkill.Name}"/>
+                            <StackPanel Orientation="Horizontal" MinWidth="100">
+                                <Button  Content="+" MinWidth="50" Command="{Binding AddSkillCommand}"/>
+                                <Button Content="-" MinWidth="50" Command="{Binding DeleteSkillCommand}"/>
+                            </StackPanel>
+                            <ListBox MinHeight="20" ItemsSource="{Binding ChoosenVacancy.specializations}" SelectedItem="{Binding SelectedSpecialization, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox MinHeight="20" Text="{Binding ToAddSpecialization.Name}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button  Content="+" MinWidth="50" Command="{Binding AddSpecializationCommand}"/>
+                                <Button Content="-" MinWidth="50" Command="{Binding DeleteSpecializationCommand}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBox Text="{Binding ChoosenVacancy.Description}"/>
+                            <TextBox Text="{Binding ChoosenVacancy.Snippet.Requirement}"/>
+                            <TextBox Text="{Binding ChoosenVacancy.Snippet.Responsibility}"/>
+                        </StackPanel>
+                        
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+        </TabItem>
+    </TabControl>
 </Window>
