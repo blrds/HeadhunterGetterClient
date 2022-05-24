@@ -74,7 +74,7 @@ namespace HeadhunterGetterClient.Models
         public IEnumerable<Specialization> specializations { get; set; }
         public IEnumerable<Skill> Key_skills { get; set; }
 
-        public string Discription { get; set; }
+        public string Description { get; set; }
     }
 
     public class Ids
@@ -183,7 +183,7 @@ namespace HeadhunterGetterClient.Models
                         com.CommandText = "INSERT INTO " +
                             "vacancies (id, name, idarea, salaryfrom, salaryto, salarycurrency, publisheddate, snippetrequirement, snippetresponsibility, description, idexperience)" +
                             "values(" + dataObject.Id + ",'" + dataObject.Name + "'," + dataObject.Area.Id + "," + (dataObject.Salary?.From == null ? "0" : dataObject.Salary.From) + "," + (dataObject.Salary?.To == null ? "0" : dataObject.Salary.To) + ",'"
-                             + (dataObject.Salary?.Currency == null ? "RUR" : dataObject.Salary.Currency) + "','" + dataObject.Published_at.ToString("yyyy-MM-dd HH:mm:ss.fff") + "','" + dataObject.Snippet?.Requirement + "','" + dataObject.Snippet?.Responsibility + "','" + dataObject.Discription + "','" + dataObject.Experience.Id + "')";
+                             + (dataObject.Salary?.Currency == null ? "RUR" : dataObject.Salary.Currency) + "','" + dataObject.Published_at.ToString("yyyy-MM-dd HH:mm:ss.fff") + "','" + dataObject.Snippet?.Requirement + "','" + dataObject.Snippet?.Responsibility + "','" + dataObject.Description + "','" + dataObject.Experience.Id + "')";
                     }
                     else
                     {
@@ -196,7 +196,7 @@ namespace HeadhunterGetterClient.Models
                             "publisheddate='" + dataObject.Published_at.ToString("yyyy-MM-dd HH:mm:ss.fff") + "', " +
                             "snippetrequirement='" + dataObject.Snippet?.Requirement +
                             "', snippetresponsibility='" + dataObject.Snippet?.Responsibility + "', " +
-                            "description='" + dataObject?.Discription + "', " +
+                            "description='" + dataObject?.Description + "', " +
                             "idexperience='" + dataObject.Experience.Id + "' " +
                             "where id=" + dataObject.Id;
                     }
