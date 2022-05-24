@@ -22,7 +22,7 @@ namespace HeadhunterGetterClient.Models
 
     public class Specialization
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = "";
         public string Name { get; set; }
         public override string ToString()
         {
@@ -55,7 +55,7 @@ namespace HeadhunterGetterClient.Models
     }
     public class Skill
     {
-        public int Id { get; set; }
+        public int Id { get; set; } = -1;
         public string Name { get; set; }
         public override string ToString()
         {
@@ -93,13 +93,14 @@ namespace HeadhunterGetterClient.Models
         {
             count = 0;
             string answer = "";
-            string urlParametrs = "?";
+            string urlParametrs = "";
+            if (name != "" || salary != -1) urlParametrs = "&";
             if (name != "")
             {
                 urlParametrs += "text=\"" + name + "\"";
             }
             if (name != "" && salary != -1) urlParametrs += "&";
-            if (salary != -1) urlParametrs += "salary=" + salary;
+            if (salary != -1) urlParametrs += "salary=" + salary.ToString("0");
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(URL);
 

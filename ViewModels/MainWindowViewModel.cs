@@ -153,7 +153,17 @@ namespace HeadhunterGetterClient.ViewModels
                 }
                 if (response.IsSuccessStatusCode)
                 {
-                    var sk = response.Content.ReadAsAsync< IEnumerable<Skill>>().Result;
+                    IEnumerable<Skill> sk = new List<Skill>();
+                    try
+                    {
+                        sk = response.Content.ReadAsAsync<IEnumerable<Skill>>().Result;
+                    }
+                    catch (Exception e)
+                    {
+                        string s = response.Content.ReadAsStringAsync().Result;
+                        Skill s1 = JsonConvert.DeserializeObject<Skill>(s);
+                        sk = sk.Append(s1).ToList();
+                    }
                     client = new HttpClient();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Test")));
@@ -185,7 +195,17 @@ namespace HeadhunterGetterClient.ViewModels
                 }
                 if (response.IsSuccessStatusCode)
                 {
-                    var sk = response.Content.ReadAsAsync<IEnumerable<Specialization>>().Result;
+                    IEnumerable<Specialization> sk = new List<Specialization>();
+                    try
+                    {
+                        sk = response.Content.ReadAsAsync<IEnumerable<Specialization>>().Result;
+                    }
+                    catch (Exception e)
+                    {
+                        string s = response.Content.ReadAsStringAsync().Result;
+                        Specialization s1 = JsonConvert.DeserializeObject<Specialization>(s);
+                        sk = sk.Append(s1).ToList();
+                    }
                     client = new HttpClient();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Test")));
@@ -239,7 +259,17 @@ namespace HeadhunterGetterClient.ViewModels
                 }
                 if (response.IsSuccessStatusCode)
                 {
-                    var sk = response.Content.ReadAsAsync<IEnumerable<Skill>>().Result;
+                    IEnumerable<Skill> sk = new List<Skill>();
+                    try
+                    {
+                        sk = response.Content.ReadAsAsync<IEnumerable<Skill>>().Result;
+                    }
+                    catch (Exception e)
+                    {
+                        string s = response.Content.ReadAsStringAsync().Result;
+                        Skill s1 = JsonConvert.DeserializeObject<Skill>(s);
+                        sk = sk.Append(s1).ToList();
+                    }
                     client = new HttpClient();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Test")));
@@ -271,7 +301,17 @@ namespace HeadhunterGetterClient.ViewModels
                 }
                 if (response.IsSuccessStatusCode)
                 {
-                    var sk = response.Content.ReadAsAsync< IEnumerable<Specialization>>().Result;
+                    IEnumerable<Specialization> sk = new List<Specialization>();
+                    try
+                    {
+                        sk = response.Content.ReadAsAsync<IEnumerable<Specialization>>().Result;
+                    }
+                    catch (Exception e)
+                    {
+                        string s = response.Content.ReadAsStringAsync().Result;
+                        Specialization s1 = JsonConvert.DeserializeObject<Specialization>(s);
+                        sk = sk.Append(s1).ToList();
+                    }
                     client = new HttpClient();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Test")));
@@ -301,6 +341,15 @@ namespace HeadhunterGetterClient.ViewModels
         private bool CanDeleteSkillCommnadExecute(object p) => SelectedSkill!=null;
         private void OnDeleteSkillCommandExecuted(object p)
         {
+            if (SelectedSkill.Id != -1)
+            {
+                client = new HttpClient();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Test")));
+                client.BaseAddress = new Uri(URL + "/vskills/" + ChoosenVacancy.Id + "/" + SelectedSkill.Id);
+                var response = client.DeleteAsync("").Result;
+                client.Dispose();
+            }
             var a = ChoosenVacancy.Key_skills.ToList();
             a.Remove(SelectedSkill);
             ChoosenVacancy.Key_skills = a;
@@ -323,6 +372,15 @@ namespace HeadhunterGetterClient.ViewModels
         private bool CanDeleteSpecializationCommnadExecute(object p) => SelectedSpecialization != null;
         private void OnDeleteSpecializationCommandExecuted(object p)
         {
+            if (SelectedSpecialization.Id != "" || SelectedSpecialization.Id!=null)
+            {
+                client = new HttpClient();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(new ProductHeaderValue("Test")));
+                client.BaseAddress = new Uri(URL + "/vspecs/" + ChoosenVacancy.Id + "/" + SelectedSpecialization.Id);
+                var response = client.DeleteAsync("").Result;
+                client.Dispose();
+            }
             var a = ChoosenVacancy.specializations.ToList();
             a.Remove(SelectedSpecialization);
             ChoosenVacancy.specializations = a;

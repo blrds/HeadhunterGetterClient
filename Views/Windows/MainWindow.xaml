@@ -20,12 +20,12 @@
                     <TextBlock Text="Вакансия" Margin="5,2.5"/>
                     <TextBox Margin="5,2.5" Text="{Binding VacancyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock Text="Зарплата" Margin="5,2.5"/>
-                    <TextBox Margin="5,2.5" Text="{Binding Salary, Mode=TwoWay, StringFormat=\{0:C\}, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Margin="5,2.5" Text="{Binding Salary, Mode=TwoWay, StringFormat=\{0:F\}, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Content="Искать" Margin="5,2.5" Command="{Binding GetCommand}"/>
                     <TextBlock Text="Найдено" Margin="5,2.5"/>
-                    <TextBlock Text="{Binding VacanciesFound}" Margin="5,2.5"/>
+                    <TextBlock Text="{Binding VacanciesFound}" Margin="5,2.5" />
                 </StackPanel>
-                <TextBlock Text="{Binding OutPut, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="{Binding OutPut, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
             </DockPanel>
         </TabItem>
         <TabItem>
@@ -33,7 +33,7 @@
                 <TextBlock Text="Клиент"/>
             </TabItem.Header>
             <TabControl>
-                <TabItem IsSelected="{Binding isVacansies}">
+                <TabItem x:Name="tabItem" IsSelected="{Binding isVacansies}">
                     <TabItem.Header>
                         <TextBlock Text="Вакансии"/>
                     </TabItem.Header>
@@ -50,7 +50,7 @@
                                             <Button Content="Просмотр" DockPanel.Dock="Bottom" CommandParameter="{Binding Id}" HorizontalAlignment="Left" Margin="5" Command="{Binding DataContext.WatchCommand, ElementName=window}" />
                                             <Button Content="Удалить" DockPanel.Dock="Bottom" CommandParameter="{Binding Id}" HorizontalAlignment="Left" Margin="5" Command="{Binding DataContext.DeleteCommand, ElementName=window}"/>
                                         </StackPanel>
-                                        <TextBlock Text="{Binding  Description}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding  Description}" HorizontalAlignment="Center" TextWrapping="Wrap" MaxWidth="{Binding Width, ElementName=window}"/>
                                     </DockPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -62,7 +62,7 @@
                         <TextBlock Text="Вакансия"/>
                     </TabItem.Header>
                     <DockPanel LastChildFill="True">
-                        <TextBox DockPanel.Dock="Top" HorizontalAlignment="Center" Text="{Binding  ChoosenVacancy.Name}"/>
+                        <TextBox DockPanel.Dock="Top" HorizontalAlignment="Center" Text="{Binding  ChoosenVacancy.Name}" TextWrapping="Wrap"/>
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
                             <Button Content="UPDATE" Command="{Binding PutCommand}"/>
                             <Button Content="POST" Command="{Binding PostCommand}"/>
@@ -92,11 +92,11 @@
                             </StackPanel>
                         </StackPanel>
                         <StackPanel>
-                            <TextBox Text="{Binding ChoosenVacancy.Description}"/>
-                            <TextBox Text="{Binding ChoosenVacancy.Snippet.Requirement}"/>
-                            <TextBox Text="{Binding ChoosenVacancy.Snippet.Responsibility}"/>
+                            <TextBox Text="{Binding ChoosenVacancy.Description}" TextWrapping="Wrap"/>
+                            <TextBox Text="{Binding ChoosenVacancy.Snippet.Requirement}" TextWrapping="Wrap"/>
+                            <TextBox Text="{Binding ChoosenVacancy.Snippet.Responsibility}" TextWrapping="Wrap"/>
                         </StackPanel>
-                        
+
                     </DockPanel>
                 </TabItem>
             </TabControl>
